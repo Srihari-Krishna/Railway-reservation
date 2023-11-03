@@ -23,11 +23,21 @@ class Railway{
             return available_seats;
         }
 
-        void generateTicket(string name, string dest){
+        void generateTicket(string name, string dest, int paid){
+            string ticketpaid;
+            if(paid == 0){
+                ticketpaid = "NO";
+            }
+            else{
+                ticketpaid = "YES";
+            }
             ofstream writeFile(name+"_ticket.txt");
 
-            writeFile << "Name\t\tSource\tDestination\tPaid"<<endl;
-            writeFile << name <<"\t\tBangalore" << dest <<"\tYes"<<endl;
+            writeFile << "Name        :\t"<<name<<endl;
+            writeFile << "Source      :\t"<<"Bangalore"<<endl;
+            writeFile << "Destination :\t"<<dest<<endl;
+            writeFile << "Paid        :\t"<<ticketpaid<<endl;
+
             cout<<"Your ticket has been generated"<<endl;
             writeFile.close();
             exit(0);
@@ -44,14 +54,14 @@ int main() {
 
     int ch,classtype,flag=0;
     string dest,str;
-    string str;
+    int paid =0;
     string name;
-    char yesno;
+    string yesno;
 
     cout<<"Please enter your name"<<endl;
-    cin >> name;
-    cout<<"Welcome to Railway reservation!"<<endl<<"Please choose the below option/s"<<endl;
-    cout<<"1. Today's departures/arrivals"<<endl<<"2. Reserve seat/s"<<endl;
+    getline(cin,name);
+    cout<<endl<<"Welcome to Railway reservation!"<<endl<<"Please choose the below option/s"<<endl<<endl;
+    cout<<"1. Today's departures/arrivals"<<endl<<"2. Reserve seat/s"<<endl<<endl;
     cin >> ch;
 
     switch(ch){
@@ -62,9 +72,14 @@ int main() {
             break;
 
         case 2:
-            cout<<"Please choose your destination"<<endl;
+            /*while(getline(inputFile,str)){
+                cout<<str<<endl;
+            } */
+            cout<<"Please choose your destination"<<endl<<endl;
+            cout<<"Mysore"<<endl<<"Chennai"<<endl<<"Goa"<<endl<<"Mumbai"<<endl;
             cin>>dest; 
             while(getline(inputFile,str)){
+                
                 if(str==dest){
                     flag=1;
                 }
@@ -80,36 +95,60 @@ int main() {
             switch(classtype){
                 case 1:
                     if(regular.checkSeat()){
-                        cout<<"Seat is available (Rs 1000). Would you like to confirm ? (y/n)"<<endl;
+                        cout<<"Seat is available (Rs 300). Would you like to pay now or later ? (now/later)"<<endl;
                         cin>>yesno;
-                        if(yesno == 'n'){cout<<"Please come again"<<endl;exit(0);}
-                        else{
+                        if(yesno == "now"){
+                            paid = 1;
                             regular.reserve_seat();
-                            regular.generateTicket(name,dest);
+                            regular.generateTicket(name,dest,paid);
+                        }
+                        else if(yesno == "later"){
+                            regular.reserve_seat();
+                            regular.generateTicket(name,dest,paid);
+                        }
+                        else{
+                            cout<<"Invalid input"<<endl;
+                            exit(0);
                         }
                     }
                     break;
 
                 case 2:
                     if(sleeper.checkSeat()){
-                        cout<<"Seat is available (Rs 1000). Would you like to confirm ? (y/n)"<<endl;
+                        cout<<"Seat is available (Rs 550). Would you like to pay now or later ? (now/later)"<<endl;
                         cin>>yesno;
-                        if(yesno == 'n'){cout<<"Please come again"<<endl;exit(0);}
-                        else{
+                        if(yesno == "now"){
+                            paid = 1;
+                            regular.reserve_seat();
+                            regular.generateTicket(name,dest,paid);
+                        }
+                        else if(yesno == "later"){
                             sleeper.reserve_seat();
-                            sleeper.generateTicket(name,dest);
+                            sleeper.generateTicket(name,dest,paid);
+                        }
+                        else{
+                            cout<<"Invalid input"<<endl;
+                            exit(0);
                         }
                     }
                     break;
 
                 case 3:
                     if(ac.checkSeat()){
-                        cout<<"Seat is available (Rs 1000). Would you like to confirm ? (y/n)"<<endl;
+                        cout<<"Seat is available (Rs 1000). Would you like to pay now or later ? (now/later)"<<endl;
                         cin>>yesno;
-                        if(yesno == 'n'){cout<<"Please come again"<<endl;exit(0);}
-                        else{
+                        if(yesno == "now"){
+                            paid = 1;
+                            regular.reserve_seat();
+                            regular.generateTicket(name,dest,paid);
+                        }
+                        else if(yesno == "later"){
                             ac.reserve_seat();
-                            ac.generateTicket(name,dest);
+                            ac.generateTicket(name,dest,paid);
+                        }
+                        else{
+                            cout<<"Invalid input"<<endl;
+                            exit(0);
                         }
                     }
                     break;
